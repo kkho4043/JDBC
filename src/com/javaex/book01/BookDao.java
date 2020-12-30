@@ -14,7 +14,6 @@ public class BookDao {
 	private String id = "webdb";
 	private String pw = "webdb";
 	
-	
 	//검색하기==================================================================
 	public List<BookVo> searchList(String search){
 		// 0. import java.sql.*;
@@ -51,12 +50,15 @@ public class BookDao {
 			query +=" b.title, ";
 			query +=" b.pubs, ";
 			query +=" TO_CHAR((b.pub_date),'YYYY/MM/DD'), ";
-			query +=" a.author_name ";
+			query +=" b.author_id, ";
+			query +=" a.author_name,";
+			query +=" a.author_desc ";
 			query +=" from book b,author a ";
 			query +=" where(b.title LIKE '%"+search+"%' " ;
 			query +=" or b.pubs LIKE '%"+search+"%' ";
 			query +=" or a.author_name LIKE '%" +search+"%' )";
 			query +=" and b.author_id = a.author_id";
+			query +=" order by b.book_id asc";
 
 			pstmt = conn.prepareStatement(query);
 
@@ -68,9 +70,11 @@ public class BookDao {
 				String bookTitle= rs.getNString("title");
 				String bookpubs = rs.getNString("pubs");
 				String bookpubdate = rs.getNString("TO_CHAR((b.pub_date),'YYYY/MM/DD')");
+				int authorId = rs.getInt("author_id"); 
 				String authorName = rs.getNString("author_name");
+				String authorDesc = rs.getNString("author_desc");
 			
-				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorName);
+				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorId,authorName,authorDesc);
 				BooksearchList.add(vo);
 			}
 		} catch (ClassNotFoundException e) {
@@ -98,7 +102,7 @@ public class BookDao {
 		return BooksearchList;
 	}
 	
-	//책과 작가 가져오기=================================================================
+//책과 작가 가져오기=================================================================
 	public List<BookVo> getBookallList() {
 		// 0. import java.sql.*;
 
@@ -123,10 +127,13 @@ public class BookDao {
 					query +=" b.title, ";
 					query +=" b.pubs, ";
 					query +=" TO_CHAR((b.pub_date),'YYYY/MM/DD'), ";
-					query +=" a.author_name ";
+					query +=" b.author_id, ";
+					query +=" a.author_name, ";
+					query +=" a.author_desc ";
 					query +=" from book b,author a ";
 					query +=" where b.author_id = a.author_id ";
-
+					query +=" order by b.book_id asc";
+					
 					pstmt = conn.prepareStatement(query);
 					rs = pstmt.executeQuery();
 
@@ -136,10 +143,12 @@ public class BookDao {
 						String bookTitle= rs.getNString("title");
 						String bookpubs = rs.getNString("pubs");
 						String bookpubdate = rs.getNString("TO_CHAR((b.pub_date),'YYYY/MM/DD')");
+						int authorId = rs.getInt("author_id"); 
 						String authorName = rs.getNString("author_name");
+						String authorDesc = rs.getNString("author_desc");
 						
 
-						BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorName);
+						BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorId,authorName,authorDesc);
 						BookallList.add(vo);
 					}
 				} catch (ClassNotFoundException e) {
@@ -169,7 +178,7 @@ public class BookDao {
 	}
 	
 	
-	//책 수정
+//책 수정=================================================================-
 	public int bookUpdate(BookVo bookVo) {
 
 		// 0. import java.sql.*;
@@ -193,7 +202,7 @@ public class BookDao {
 			query += "     pub_date = ?, ";
 			query += "     author_id = ? ";
 			query += " where book_id = ? ";
-
+			query +=" order by book_id asc";
 			pstmt = conn.prepareStatement(query);
 			
 			System.out.println(query);
@@ -230,7 +239,7 @@ public class BookDao {
 		return count;
 	}
 	
-	//책삭제=======================================================================
+//책삭제=======================================================================
 	public int bookDelete(int BookId) {
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -279,7 +288,7 @@ public class BookDao {
 		}
 		return count;
 	}
-	//책 가져오기=================================================================
+//책 가져오기=================================================================
 	public List<BookVo> getBookList() {
 		// 0. import java.sql.*;
 
@@ -306,6 +315,7 @@ public class BookDao {
 			query += " TO_CHAR((pub_date),'YYYY-MM-DD'), ";
 			query += " author_id ";
 			query += " FROM book";
+			query +=" order by book_id asc";
 
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -347,7 +357,7 @@ public class BookDao {
 
 	}
 	
-	//책 등록=======================================================================
+//책 등록=======================================================================
 	public int bookInsert(BookVo bookVo) {
 		int count = 0;
 		// 0. import java.sql.*;

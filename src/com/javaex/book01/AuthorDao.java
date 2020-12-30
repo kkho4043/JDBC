@@ -18,12 +18,7 @@ public class AuthorDao {
 	// 디폴트 생성자
 	// 메소드g/s
 	// 메소드 일반
-	
-	
-	//all list
-	
-	
-	
+
 	//수정 ------------------------------------------------------------------------------------
 	public int authorUpdate(AuthorVo authorVo) {
 

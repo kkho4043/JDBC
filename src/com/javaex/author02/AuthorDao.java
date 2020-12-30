@@ -169,11 +169,6 @@ public class AuthorDao {
 		getConnection();
 		int count = 0;
 		try {
-					
-			// 3. SQL문 준비 / 바인딩 / 실행
-			Class.forName(driver);
-			// 2. Connection 얻어오기
-			conn = DriverManager.getConnection(url, id, pw);
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "";
@@ -189,8 +184,6 @@ public class AuthorDao {
 
 			// 4.결과처리
 			System.out.println("[DAO]-author " + count + "건이 저장되었습니다.");
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} 

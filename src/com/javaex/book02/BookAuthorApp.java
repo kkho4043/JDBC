@@ -138,7 +138,7 @@ public class BookAuthorApp {
 		for (int i = 0; i < bookallList.size(); i++) {
 			BookVo voa = (BookVo) bookallList.get(i);
 			System.out.println(voa.getBookId()+","+voa.getBookTitle()+","+voa.getBookPubs()+","+voa.getBookPubDate()
-			+","+voa.getauthorname());
+			+","+voa.getAuthorname()+","+voa.getAuthordecs());
 		}
 		
 		Scanner sc = new Scanner(System.in);
@@ -151,7 +151,7 @@ public class BookAuthorApp {
 		for (int i = 0; i < booksearchList.size(); i++) {
 			BookVo vo = booksearchList.get(i);
 			System.out.println(vo.getBookId() + "," + vo.getBookTitle() + "," + vo.getBookPubs() + ","
-					+ vo.getBookPubDate() + "," + vo.getBookauthorId());
+					+ vo.getBookPubDate() + "," + vo.getBookauthorId()+","+vo.getAuthorname() +","+vo.getAuthordecs());
 		}
 	}
 }

@@ -72,12 +72,15 @@ public class BookDao {
 			query += " b.title, ";
 			query += " b.pubs, ";
 			query += " TO_CHAR((b.pub_date),'YYYY/MM/DD'), ";
-			query += " a.author_name ";
+			query += " b.author_id, ";
+			query += " a.author_name, ";
+			query += " a.author_desc ";
 			query += " from book b,author a ";
 			query += " where(b.title LIKE '%" + search + "%' ";
 			query += " or b.pubs LIKE '%" + search + "%' ";
 			query += " or a.author_name LIKE '%" + search + "%' )";
 			query += " and b.author_id = a.author_id";
+			query +=" order by b.book_id asc";
 
 			pstmt = conn.prepareStatement(query);
 
@@ -89,9 +92,12 @@ public class BookDao {
 				String bookTitle = rs.getNString("title");
 				String bookpubs = rs.getNString("pubs");
 				String bookpubdate = rs.getNString("TO_CHAR((b.pub_date),'YYYY/MM/DD')");
+				int authorId = rs.getInt("author_id");
 				String authorName = rs.getNString("author_name");
+				String authorDesc= rs.getNString("author_desc");
+				
 
-				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorName);
+				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate,authorId, authorName ,authorDesc);
 				BooksearchList.add(vo);
 			}
 		} catch (SQLException e) {
@@ -118,9 +124,12 @@ public class BookDao {
 			query += " b.title, ";
 			query += " b.pubs, ";
 			query += " TO_CHAR((b.pub_date),'YYYY/MM/DD'), ";
-			query += " a.author_name ";
+			query += " b.author_id, ";
+			query += " a.author_name, ";
+			query += " a.author_desc ";
 			query += " from book b,author a ";
 			query += " where b.author_id = a.author_id ";
+			query +=" order by b.book_id asc";
 
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -131,9 +140,12 @@ public class BookDao {
 				String bookTitle = rs.getNString("title");
 				String bookpubs = rs.getNString("pubs");
 				String bookpubdate = rs.getNString("TO_CHAR((b.pub_date),'YYYY/MM/DD')");
+				int authorid = rs.getInt("author_id");
 				String authorName = rs.getNString("author_name");
+				String authorDesc= rs.getNString("author_desc");
+				
 
-				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorName);
+				BookVo vo = new BookVo(bookId, bookTitle, bookpubs, bookpubdate, authorid,authorName ,authorDesc);
 				BookallList.add(vo);
 			}
 		} catch (SQLException e) {
@@ -229,6 +241,7 @@ public class BookDao {
 			query += " TO_CHAR((pub_date),'YYYY-MM-DD'), ";
 			query += " author_id ";
 			query += " FROM book";
+			query +=" order by book_id asc";
 
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
